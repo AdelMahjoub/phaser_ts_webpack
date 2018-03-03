@@ -15,7 +15,7 @@ const config = {
     output: { 
         path: path.resolve('dist'), 
         filename: dev ? '[name].js' : '[name].[chunkhash:8].js',
-        publicPath: '/' 
+        publicPath: '' 
     },
     resolve: { 
         extensions: ['.ts', '.js'],
