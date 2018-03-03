@@ -28,6 +28,11 @@ const config = {
     context: __dirname, 
     module: {
         rules: [
+            { 
+                test: /\.ts$/, 
+                enforce: 'pre', 
+                loader: 'tslint-loader' 
+            },
             {
                 test: /\.ts$/,
                 exclude: /node_modules/,
@@ -51,20 +56,31 @@ const config = {
         ]
     },
     plugins: [
-        new webpack.DefinePlugin({ IN_DEVELOPMENT: JSON.stringify(dev) }),
+        new webpack.DefinePlugin({ 
+            __IN_DEVELOPMENT__: JSON.stringify(dev),
+            __DEFAULT_GAME_WIDTH__: JSON.stringify(640),
+            __DEFAULT_GAME_HEIGHT__: JSON.stringify(360),
+            __DEFAULT_MIN_GAME_WIDTH__: JSON.stringify(256),
+            __DEFAULT_MIN_GAME_HEIGHT__: JSON.stringify(144),
+            __DEFAULT_MAX_GAME_WIDTH__: JSON.stringify(1920),
+            __DEFAULT_MAX_GAME_HEIGHT__: JSON.stringify(1080),
+            __DEFAULT_SCALE_MODE__: /** Phaser.ScaleManager.SHOW_ALL */JSON.stringify(2) 
+        }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'phaser',
-            filename: 'phaser.js'
+            filename: 'phaser.min.js'
         }),
         new HtmlWebpackPlugin({ 
             template: path.resolve('src/index.html'),
+            base: { href: '' },
+            title: 'phaser typescript webpack template',
             inject: 'body',
             chunks: ['phaser', 'bundle'],
             chunkSortMode: 'manual',
             minify: {
-                minifyCSS: true,
-                minifyJS: true,
-                collapseWhitespace: true
+                minifyCSS: !dev,
+                minifyJS: !dev,
+                collapseWhitespace: !dev
             }
         }),
         new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true  }),
