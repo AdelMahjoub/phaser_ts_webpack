@@ -1,5 +1,3 @@
-import Title from './Title';
-
 class Preload extends Phaser.State {
     constructor() {
         super();

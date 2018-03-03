@@ -1,5 +1,3 @@
-import Preload from './Preload';
-
 class Boot extends Phaser.State {
     constructor() {
         super();
