@@ -68,7 +68,7 @@ const config = {
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'phaser',
-            filename: 'phaser.min.js'
+            filename: dev ? 'phaser.js' : 'phaser.min.js'
         }),
         new HtmlWebpackPlugin({ 
             template: path.resolve('src/index.html'),
