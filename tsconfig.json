@@ -1,6 +1,19 @@
 {
     "compilerOptions": {
         "module": "es2015",
-        "target": "es5"   
-    }
+        "target": "es5",
+        "sourceMap": true,
+        "noEmitOnError": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "removeComments": true,
+        "strict": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }
