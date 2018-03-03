@@ -1,18 +1,9 @@
 /// <reference path="../node_modules/phaser/typescript/phaser.comments.d.ts"/>
+/// <reference path="./globals.d.ts"/>
 
 import Boot from './states/Boot';
 import Preload from './states/Preload';
 import Title from './states/Title';
-
-interface IGameConfig {
-    width: number;
-    height: number;
-    renderer: number;
-    parent?: string|HTMLElement;
-    state?: Phaser.State;
-    transparent?: boolean;
-    antialias?: boolean;
-}
 
 class App extends Phaser.Game {
     constructor(config: IGameConfig) {
@@ -34,8 +25,8 @@ class App extends Phaser.Game {
 window.addEventListener('load', function() {
 
     const config: IGameConfig = {
-        width: 640,
-        height: 360,
+        width: __DEFAULT_GAME_WIDTH__,
+        height: __DEFAULT_GAME_HEIGHT__,
         renderer: Phaser.AUTO
     };
 

@@ -11,7 +11,7 @@ class Title extends Phaser.State {
     }
 
     create() {
-        let title: Phaser.BitmapText = this.add.bitmapText(this.world.centerX, this.world.centerY, 'amiga_forever', 'Phaser\nWebpack\nTypscript', 24);
+        let title: Phaser.BitmapText = this.add.bitmapText(this.world.centerX, this.world.centerY, 'Vermin_Vibes 1989', 'Phaser Sandbox', 34);
         title.anchor.setTo(0.5);
         title.align = 'center';
     }
