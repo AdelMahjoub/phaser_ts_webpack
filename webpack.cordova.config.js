@@ -5,16 +5,14 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const dev = process.env.WEBPACK_BUILD_MODE  === 'development' ? true : false;
-
 const config = { 
     entry: { 
         bundle:  path.resolve('src/main.ts'),
         phaser: ['pixi', 'p2', 'phaser']
     }, 
     output: { 
-        path: path.resolve('dist'), 
-        filename: dev ? '[name].js' : '[name].[chunkhash:8].js',
+        path: path.resolve('www'), 
+        filename: '[name].[chunkhash:8].js',
         publicPath: '' 
     },
     resolve: { 
@@ -56,53 +54,39 @@ const config = {
         ]
     },
     plugins: [
-        new webpack.DefinePlugin({ 
-            __DEV__: JSON.stringify(dev),
-        }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'phaser',
-            filename: dev ? 'phaser.js' : 'phaser.min.js'
+            filename: 'phaser.min.js'
         }),
         new HtmlWebpackPlugin({ 
-            template: path.resolve('src/index.html'),
-            base: { href: '' },
+            template: path.resolve('src/cordova.html'),
             title: 'PhaserTsWebpack',
             inject: 'body',
             chunks: ['phaser', 'bundle'],
             chunkSortMode: 'manual',
             minify: {
-                minifyCSS: !dev,
-                minifyJS: !dev,
-                collapseWhitespace: !dev
+                removeAttributeQuotes: true,
+                collapseWhitespace: true,
+                html5: true,
+                minifyCSS: true,
+                minifyJS: true,
+                minifyURLs: true,
+                removeComments: true,
+                removeEmptyAttributes: true
             }
         }),
         new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true  }),
         new CleanWebpackPlugin(['dist']),
-        new CopyWebpackPlugin([{from: path.resolve('assets'), to: path.resolve('dist/assets')}]),
-        new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/])
-    ],
-    watch: dev,
-    devtool: dev ? 'cheap-module-eval-source-map' : false,
-    devServer: {
-        hot: true,
-        compress: true,
-        overlay: true,
-        proxy: {
-            '/api': {
-                target: 'http://localhost:8080'
+        new CopyWebpackPlugin([{from: path.resolve('assets'), to: path.resolve('www/assets')}]),
+        new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
+        new webpack.optimize.UglifyJsPlugin({
+            drop_console: true,
+            minimize: true,
+            output: {
+                comments: false
             }
-        }
-    }
+        })
+    ]
 };
-
-if(!dev) {
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        drop_console: true,
-        minimize: true,
-        output: {
-            comments: false
-        }
-    }));
-}
 
 module.exports = config;

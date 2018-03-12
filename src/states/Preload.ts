@@ -11,8 +11,8 @@ class Preload extends Phaser.State {
     }
 
     create() {
-        this.game.state.start('Title');
+        this.game.state.start('Menu');
     }
 }
 
-export default Preload;
+export { Preload };

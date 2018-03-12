@@ -1,16 +1,17 @@
 /// <reference path="../node_modules/phaser/typescript/phaser.comments.d.ts"/>
 /// <reference path="./globals.d.ts"/>
 
-import Boot from './states/Boot';
-import Preload from './states/Preload';
-import Title from './states/Title';
+import { Boot } from './states/Boot';
+import { Preload } from './states/Preload';
+import { Menu } from './states/Menu';
 
-class App extends Phaser.Game {
+class Game extends Phaser.Game {
+
     constructor(config: IGameConfig) {
         super(config.width, config.height, config.renderer);
         this.state.add('Boot', Boot);
         this.state.add('Preload', Preload);
-        this.state.add('Title', Title);
+        this.state.add('Menu', Menu);
     }
 
     /**
@@ -22,15 +23,30 @@ class App extends Phaser.Game {
     }
 }
 
-window.addEventListener('load', function() {
+const config: IGameConfig = {
+    width: 640,
+    height: 360,
+    renderer: Phaser.AUTO
+};
 
-    const config: IGameConfig = {
-        width: __DEFAULT_GAME_WIDTH__,
-        height: __DEFAULT_GAME_HEIGHT__,
-        renderer: Phaser.AUTO
+(<any>window).game = new Game(config);
+
+if (!(<any>window).cordova) {
+    window.addEventListener('load', function() {
+        (<any>window).game.run();
+    });
+} else {
+    const app = {
+        initialize: function() {
+            document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        },
+        onDeviceReady: function() {
+            this.receivedEvent('deviceready');
+            (<any>window).game.run();
+        },
+        receivedEvent: function (id: any) {
+            console.log('Received Event: ' + id);
+        }
     };
-
-    const app = new App(config);
-
-    app.run();
-});
+    app.initialize();
+}

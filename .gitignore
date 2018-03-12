@@ -1,4 +1,10 @@
 node_modules
 dist
+www
+platforms
+plugins
 npm-debug.log
 .cache-loader
+.idea
+.vscode
+*.log
