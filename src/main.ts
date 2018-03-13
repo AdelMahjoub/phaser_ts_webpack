@@ -36,17 +36,7 @@ if (!(<any>window).cordova) {
         (<any>window).game.run();
     });
 } else {
-    const app = {
-        initialize: function() {
-            document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-        },
-        onDeviceReady: function() {
-            this.receivedEvent('deviceready');
-            (<any>window).game.run();
-        },
-        receivedEvent: function (id: any) {
-            console.log('Received Event: ' + id);
-        }
-    };
-    app.initialize();
+    document.addEventListener('deviceready', function() {
+        (<any>window).game.run();
+    }, false);
 }
